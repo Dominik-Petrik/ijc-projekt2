@@ -11,7 +11,7 @@ void printValues(htab_pair_t *data)
 
 int main()
 {
-    htab_t *t = htab_init(100);
+    htab_t *t = htab_init(10);
     char word[MAX_WORD_LEN];
     while (read_word(word, MAX_WORD_LEN, stdin) != EOF)
     {

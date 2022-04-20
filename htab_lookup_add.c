@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "htab.h"
 #include "htab_private.h"
+#define AVG_LEN_MAX 2.0
 
 htab_pair_t *htab_lookup_add(htab_t *t, htab_key_t key)
 {
@@ -26,6 +27,11 @@ htab_pair_t *htab_lookup_add(htab_t *t, htab_key_t key)
         result->pair.value = 0;
         t->arr_ptr[idx] = result;
         t->size++;
+        float avg = (float)t->size / (float)t->array_size;
+        if (avg > AVG_LEN_MAX)
+        {
+            htab_resize(t,t->array_size * 2);
+        }
         return &result->pair;
     }
     else
@@ -54,6 +60,11 @@ htab_pair_t *htab_lookup_add(htab_t *t, htab_key_t key)
         strcpy((char*)tmp->pair.key,key);
         tmp->pair.value = 0;
         t->size++;
+        float avg = (float)t->size / (float)t->array_size;
+        if (avg > AVG_LEN_MAX)
+        {
+            htab_resize(t,t->array_size * 2);
+        }
         return &tmp->pair;
     }
 }

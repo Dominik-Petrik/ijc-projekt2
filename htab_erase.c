@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "htab.h"
 #include "htab_private.h"
+#define AVG_LEN_MIN 0.5
 
 bool htab_erase(htab_t *t, htab_key_t key)
 {
@@ -24,6 +25,11 @@ bool htab_erase(htab_t *t, htab_key_t key)
                 free((char*)tmp->pair.key);
                 free(tmp);
                 t->size--;
+                float avg = (float)t->size / (float)t->array_size;
+                if (avg < AVG_LEN_MIN)
+                {
+                    htab_resize(t,t->array_size * 2);
+                }
                 return true;
             }
             else
@@ -32,6 +38,11 @@ bool htab_erase(htab_t *t, htab_key_t key)
                 free((char*)tmp->pair.key);
                 free(tmp);
                 t->size--;
+                float avg = (float)t->size / (float)t->array_size;
+                if (avg < AVG_LEN_MIN)
+                {
+                    htab_resize(t,t->array_size * 2);
+                }
                 return true;
             }
         }
