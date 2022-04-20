@@ -7,16 +7,17 @@ int read_word(char *s, int max, FILE *f)
 
     int current;
     int i = 0;
-    if (current == EOF)
+    if ((current = fgetc(f)) == EOF)
     {
         return EOF;
     }
+    ungetc(current,f);
     
     while ((current = fgetc(f)) && !isspace(current))
     {
         if (current == EOF)
         {
-            ungetc(current, stdin);
+            ungetc(current, f);
             break;
         }
         if (i < max - 1)
